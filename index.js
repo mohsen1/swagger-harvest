@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = function HarvestSwagger(swagger) {
 
-  swagger.paths = {};
+  swagger.paths = swagger.paths || {};
 
   swagger.info = swagger.info || {};
   swagger.info.version = swagger.info.version || '0.0.0';

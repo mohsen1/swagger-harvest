@@ -1,3 +1,5 @@
+'use strict';
+
 var request = require('supertest');
 var expect = require('chai').expect;
 
@@ -75,12 +77,12 @@ describe('Query parameter', function() {
   });
 
   describe('More query params', function(){
-    describe('Triggering: GET /?age=10', function(){
+    describe('Triggering: GET /?id=10', function(){
       it('respond with json', function(){
         request(app)
-          .get('/?age=10')
+          .get('/?name=Me&id=aabb')
           .expect('Content-Type', /json/)
-          .expect(200, {name: 'Unnamed', age: '10'});
+          .expect(200, {name: 'Me', id: '10'});
       });
     });
 
@@ -119,7 +121,7 @@ xdescribe('Path Parameter: GET /foo/:id', function() {
   });
 });
 
-describe('logs swagger', function(){
+xdescribe('logs swagger', function(){
   it('log', function(){
     console.log(JSON.stringify(swagger, null, 2));
   });

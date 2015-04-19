@@ -1,3 +1,5 @@
+'use strict';
+
 var app = require('express')();
 var harvest = require('../..');
 
@@ -13,7 +15,7 @@ app.use(harvest(swagger));
 app.get('/', function (req, res) {
   res.send({
     name: req.query.name || 'Unnamed',
-    age: req.query.age
+    id: req.query.id
   });
 });
 

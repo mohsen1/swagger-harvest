@@ -1,0 +1,18 @@
+{
+    "camelcase" : true,
+    "indent": 2,
+    "undef": true,
+    "quotmark": "single",
+    "maxlen": 80,
+    "trailing": true,
+    "curly": true,
+    "node": true,
+    "expr": true,
+    "globalstrict": true,
+    "globals": {
+        "it": true,
+        "xit": true,
+        "describe": true,
+        "xdescribe": true
+    }
+}
