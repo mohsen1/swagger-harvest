@@ -11,7 +11,10 @@ var swagger = {
 app.use(harvest(swagger));
 
 app.get('/', function (req, res) {
-  res.send({name: req.query.name || 'Unnamed'});
+  res.send({
+    name: req.query.name || 'Unnamed',
+    age: req.query.age
+  });
 });
 
 app.get('/foo/:id', function(req, res) {

@@ -35,17 +35,23 @@ function addOperation(swagger, req) {
     swagger.paths[pathName][operationName] = {};
   }
 
-  for (var query in req.query) {
-    addQueryParam(swagger.paths[pathName][operationName], query);
-  }
+  Object.keys(req.query).forEach(function(queryName) {
+    addQueryParam(swagger.paths[pathName][operationName], queryName);
+  });
 }
 
 function addQueryParam(operation, queryName) {
   operation.parameters = operation.parameters || [];
 
-  operation.parameters.push({
-    name: queryName,
-    type: 'string',
-    in: 'query'
+  var exists = operation.parameters.some(function(param){
+    return param.name === queryName;
   });
+
+  if (!exists){
+    operation.parameters.push({
+      name: queryName,
+      type: 'string',
+      in: 'query'
+    });
+  }
 }

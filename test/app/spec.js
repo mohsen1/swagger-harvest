@@ -28,25 +28,69 @@ describe('Basic Operation: GET /', function() {
   });
 });
 
-describe('Query parameter: GET /?name=Me', function() {
-  describe('Triggering the call', function(){
-    it('respond with json', function(done){
-      request(app)
-        .get('/?name=Me')
-        .expect('Content-Type', /json/)
-        .expect(200, {name: 'Me'}, done);
+describe('Query parameter', function() {
+  describe('Basic', function(){
+
+    describe('Triggering: GET /?name=Me', function(){
+      it('respond with json', function(done){
+        request(app)
+          .get('/?name=Me')
+          .expect('Content-Type', /json/)
+          .expect(200, {name: 'Me'}, done);
+      });
+    });
+
+    describe('Generated Swagger', function() {
+      it('should have parameters array in GET /', function() {
+        expect(swagger.paths['/'].get.parameters).not.to.be.undefined;
+      });
+
+      it('should have "name" parameter in GET /', function(){
+        expect(swagger.paths['/'].get.parameters).to.include({
+          name: 'name',
+          in: 'query',
+          type: 'string'
+        });
+      });
+    });
+  });
+  describe('Repeated query param', function(){
+    describe('Triggering: GET /?name=You', function(){
+      it('respond with json', function(done){
+        request(app)
+          .get('/?name=You')
+          .expect('Content-Type', /json/)
+          .expect(200, {name: 'You'}, done);
+      });
+    });
+
+    describe('Generated Swagger', function(){
+      it('should have one query parameters', function(){
+        var queryParams = swagger.paths['/'].get.parameters.filter(function(p) {
+          return p.in === 'query';
+        });
+        expect(queryParams.length).to.equal(1);
+      });
     });
   });
 
-  describe('Generated Swagger', function() {
-    it('should have parameters array in GET /', function() {
-      expect(swagger.paths['/'].get.parameters).not.to.be.undefined;
+  describe('More query params', function(){
+    describe('Triggering: GET /?age=10', function(){
+      it('respond with json', function(){
+        request(app)
+          .get('/?age=10')
+          .expect('Content-Type', /json/)
+          .expect(200, {name: 'Unnamed', age: '10'});
+      });
     });
-    it('should have "name" parameter in GET /', function(){
-      expect(swagger.paths['/'].get.parameters).to.include({
-        name: 'name',
-        in: 'query',
-        type: 'string'
+
+    describe('Generated Swagger', function(){
+      it('should add more query parameters', function(){
+        expect(swagger.paths['/'].get.parameters).to.include({
+          name: 'age',
+          in: 'query',
+          type: 'string'
+        });
       });
     });
   });
