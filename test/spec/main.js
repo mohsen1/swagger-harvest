@@ -3,8 +3,8 @@
 var request = require('supertest');
 var expect = require('chai').expect;
 
-var app = require('./').app;
-var swagger = require('./').swagger;
+var app = require('../app').app;
+var swagger = require('../app').swagger;
 
 describe('Basic Operation: GET /', function() {
 
@@ -32,7 +32,6 @@ describe('Basic Operation: GET /', function() {
 
 describe('Query parameter', function() {
   describe('Basic', function(){
-
     describe('Triggering: GET /?name=Me', function(){
       it('respond with json', function(done){
         request(app)
@@ -56,6 +55,7 @@ describe('Query parameter', function() {
       });
     });
   });
+
   describe('Repeated query param', function(){
     describe('Triggering: GET /?name=You', function(){
       it('respond with json', function(done){
@@ -78,18 +78,18 @@ describe('Query parameter', function() {
 
   describe('More query params', function(){
     describe('Triggering: GET /?id=10', function(){
-      it('respond with json', function(){
+      it('respond with json', function(done){
         request(app)
-          .get('/?name=Me&id=aabb')
+          .get('/?name=Me&id=30')
           .expect('Content-Type', /json/)
-          .expect(200, {name: 'Me', id: '10'});
+          .expect(200, {name: 'Me', id: '30'}, done);
       });
     });
 
     describe('Generated Swagger', function(){
       it('should add more query parameters', function(){
         expect(swagger.paths['/'].get.parameters).to.include({
-          name: 'age',
+          name: 'id',
           in: 'query',
           type: 'string'
         });
